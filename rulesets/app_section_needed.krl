@@ -20,7 +20,7 @@ ruleset app_section_collection {
       wrangler:children()
     }
 
-    __testing = { "queries": { "name": "showChildren" },
+    __testing = { "queries": [ { "name": "showChildren" } ],
                   "events": [ { "domain": "section", "type": "section_needed",
                                 "attrs": [ "section_id" ] } ]
                 }
