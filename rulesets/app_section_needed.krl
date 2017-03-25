@@ -6,7 +6,7 @@ ruleset app_section_collection {
     >>
     author "Josh Parsons"
     logging on
-    shares showChildren, __testing
+    shares sections, showChildren, __testing
     use module io.picolabs.pico alias wrangler
   }
   
@@ -16,11 +16,16 @@ ruleset app_section_collection {
       "Section" + section_id + "Pico"
     }
 
+    sections = function() {
+      ent:sections
+    }
+
     showChildren = function() {
       wrangler:children()
     }
 
-    __testing = { "queries": [ { "name": "showChildren" } ],
+    __testing = { "queries": [ { "name": "showChildren" },
+                               { "name": "sections" } ],
                   "events": [ { "domain": "section", "type": "needed",
                                 "attrs": [ "section_id" ] } ]
                 }
