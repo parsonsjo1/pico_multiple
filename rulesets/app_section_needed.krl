@@ -6,7 +6,7 @@ ruleset app_section_collection {
     >>
     author "Josh Parsons"
     logging on
-    shares __testing
+    shares showChildren, __testing
     use module io.picolabs.pico alias wrangler
   }
   
