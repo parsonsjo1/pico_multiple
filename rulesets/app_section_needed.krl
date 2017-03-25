@@ -27,7 +27,8 @@ ruleset app_section_collection {
     __testing = { "queries": [ { "name": "showChildren" },
                                { "name": "sections" } ],
                   "events": [ { "domain": "section", "type": "needed",
-                                "attrs": [ "section_id" ] } ]
+                                "attrs": [ "section_id" ] },
+                              { "domain": "collection", "type": "empty" } ]
                 }
 
   }  
