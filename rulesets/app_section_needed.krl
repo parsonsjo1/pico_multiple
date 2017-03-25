@@ -76,7 +76,7 @@ ruleset app_section_collection {
   }
 
   rule collection_empty {
-    select when collection_empty
+    select when collection empty
     always {
       ent:sections := {}
     }
