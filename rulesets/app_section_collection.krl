@@ -16,6 +16,10 @@ ruleset app_section_collection {
       "Section" + section_id + "Pico"
     }
 
+    childFromID = function(section_id) {
+      ent:sections{section_id}
+    }
+
     sections = function() {
       ent:sections
     }
@@ -24,11 +28,14 @@ ruleset app_section_collection {
       wrangler:children()
     }
 
-    __testing = { "queries": [ { "name": "showChildren" },
-                               { "name": "sections" } ],
-                  "events": [ { "domain": "section", "type": "needed",
-                                "attrs": [ "section_id" ] },
-                              { "domain": "collection", "type": "empty" } ]
+    __testing = { "queries": [ { "name": "sections" },
+                               { "name": "showChildren" } ],
+                  "events":  [ { "domain": "collection", "type": "empty" },
+                               { "domain": "section", "type": "needed",
+                                 "attrs": [ "section_id" ] },
+                               { "domain": "section", "type": "offline",
+                                 "attrs": [ "section_id" ] }
+                             ]
                 }
 
   }  
@@ -80,6 +87,24 @@ ruleset app_section_collection {
     fired {
       ent:sections := ent:sections.defaultsTo({});
       ent:sections{[section_id]} := the_section
+    }
+  }
+
+  rule section_offline {
+    select when section offline
+    pre{
+      section_id = event:attr("section_id")
+      exists = ent:sections >< section_id
+      eci = meta:eci
+      child_to_delete = childFromID(section_id)
+    }
+    if exists then
+      send_directive("section_deleted") with
+        sectio_id = section_id
+    fired {
+      raise pico event "delete_child_request"
+        attributes child_to_delete;
+      ent:sections{[section_id]} := null
     }
   }
 
