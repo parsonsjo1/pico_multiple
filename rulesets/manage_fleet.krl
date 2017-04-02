@@ -30,9 +30,7 @@ ruleset manage_fleet {
     __testing = { "queries": [ { "name": "vehicles" },
                                { "name": "showVehicles" } ],
                   "events":  [ { "domain": "empty", "type": "collection" },
-                               { "domain": "vehicle", "type": "needed",
-                                 "attrs": [ "vehicle_id" ] },
-                               { "domain": "vehicle", "type": "offline",
+                               { "domain": "car", "type": "new_vehicle",
                                  "attrs": [ "vehicle_id" ] }
                              ]
                 }
