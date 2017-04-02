@@ -24,4 +24,19 @@ ruleset app_section {
     }
   }
 
+  rule autoAccept {
+    select when wrangler inbound_pending_subscription_added
+    pre{
+      attributes = event:attrs().klog("subcription :");
+      }
+      {
+      noop();
+      }
+    always{
+      raise wrangler event 'pending_subscription_approval'
+          attributes attributes;       
+          log("auto accepted subcription.");
+    }
+  }
+
 }

@@ -84,6 +84,13 @@ ruleset manage_fleet {
     fired {
       ent:vehicles := ent:vehicles.defaultsTo({});
       ent:vehicles{[vehicle_id]} := the_vehicle
+      raise wrangler event "subscription" with
+         name = vehicle_id
+         name_space = "fleet"
+         my_role = "controller"
+         subscriber_role = "vehicle"
+         channel_type = "subscription"
+         subscriber_eci = the_vehicle.eci
     }
   }
 
