@@ -7,6 +7,7 @@ ruleset track_trips2 {
     author "Josh Parsons"
     logging on
     shares __testing
+    use module trip_store
   }
   
   global {
@@ -45,6 +46,24 @@ ruleset track_trips2 {
       raise explicit event "found_long_trip" 
         attributes event:attrs() if mileage.as("Number").klog("mileage is: ") > long_trip.klog("long trip is ")
     }
+
+  }
+
+  rule generate_report {
+    select when vehicle new_report
+    pre {
+      trips = trip_store:trips().klog("track trips: ")
+      subscription_map = 
+      { 
+        "eci": event:attr("parent_eci").klog("parent eci"),
+        "eid": "generated-report",
+        "domain": "fleet",
+        "type": "processed_report",
+        "attrs": { "vehicle_id": event:attr("vehicle_id"), "trips": trips }
+      }
+      received = event:attrs().klog("track_trips received")
+    }
+    event:send(subscription_map.klog("track trips map"))
 
   }
   
